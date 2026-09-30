@@ -1,24 +1,26 @@
 const canvas = document.getElementById("tetris");
 const ctx = canvas.getContext("2d");
 
-const ROWS = 20;
-const COLS = 10;
 const BLOCK = 30;
 
-let board = Array.from(
-    { length: ROWS },
-    () => Array(COLS).fill(0)
-);
+let piece = {
+    x: 4,
+    y: 0,
+    shape: [
+        [1, 1],
+        [1, 1]
+    ]
+};
 
-function drawBoard() {
+function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    for (let y = 0; y < ROWS; y++) {
-        for (let x = 0; x < COLS; x++) {
-            if (board[y][x]) {
+    for (let r = 0; r < piece.shape.length; r++) {
+        for (let c = 0; c < piece.shape[r].length; c++) {
+            if (piece.shape[r][c]) {
                 ctx.fillRect(
-                    x * BLOCK,
-                    y * BLOCK,
+                    (piece.x + c) * BLOCK,
+                    (piece.y + r) * BLOCK,
                     BLOCK,
                     BLOCK
                 );
@@ -28,8 +30,9 @@ function drawBoard() {
 }
 
 function update() {
-    drawBoard();
-    requestAnimationFrame(update);
+    piece.y++;
+    draw();
 }
 
-update();
+draw();
+setInterval(update, 500);
